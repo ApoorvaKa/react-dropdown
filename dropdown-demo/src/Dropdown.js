@@ -3,7 +3,7 @@ import { Checkbox } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import './Dropdown.css';
 
-function Dropdown({ list, multiSelect = true }) {
+function Dropdown({ list, multiSelect = true, title }) {
   const [open, setOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -38,28 +38,11 @@ function Dropdown({ list, multiSelect = true }) {
         flexWrap: 'wrap',
       }}>
         <label>
-          Select Option 
+          {title}
         </label>            
         <ArrowDropDownIcon fontSize ='large'/> 
       </div>
     )
-  }
-
-  const isSelected = (option) => {
-    let className = '';
-    if (selectAll) {
-      className = 'selected';
-    } else {
-        if (multiSelect) {
-          if (selectedOptions.includes(option)) {
-            className = 'selected';
-          }
-        }else {
-          if (selectedOption === option) {
-            className = 'selected';
-          }
-        }
-    }
   }
 
   return (
@@ -71,12 +54,15 @@ function Dropdown({ list, multiSelect = true }) {
         <ul className="dropdown-content">
           {multiSelect && (
             <li>
-              <Checkbox checked={selectAll} onChange={handleSelectAll}/>
+              <Checkbox 
+                checked={selectAll} 
+                onChange={handleSelectAll}
+              />
               {selectAll ? "Unselect All" : "Select All"}
             </li>
           )}
           {list.map((option, index) => (
-            <li key={index} onClick={() => toggleOption(option)} className= {() => isSelected(option)}>
+            <li key={index} onClick={() => toggleOption(option)}>
               {multiSelect && <Checkbox checked={selectedOptions.includes(option)} onChange={() => toggleOption(option)} />}
               {option}
             </li>
