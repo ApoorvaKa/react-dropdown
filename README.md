@@ -42,7 +42,9 @@ This is multi-select UI with nothing selected
 This is multi-select UI with nothing selected
 
 ![Main Page](./images/Single-Select.png)
+
 This is single select UI.
 
 ![Main Page](./images/Single-Select-UI.png)
+
 This is single select UI with highlighting.
