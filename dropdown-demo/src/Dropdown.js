@@ -45,10 +45,28 @@ function Dropdown({ list, multiSelect = true, title }) {
     )
   }
 
+  // This determines the text of the placeholder could be ternary operator for fewer lines as shown
+  // (multiSelect ? (selectedOptions.length === 0 ? <DropdownSelector/> : selectedOptions.join(', ')) : (selectedOption || <DropdownSelector/>)
+  const Placeholder = () => {
+    if (multiSelect) {
+      if (selectedOptions.length === 0) {
+        return <DropdownSelector/>
+      }else {
+        return selectedOptions.join(', ')
+      }
+    } else {
+      if (selectedOption) {
+        return selectedOption
+      } else {
+        return <DropdownSelector/>
+      }
+    }
+  }
+
   return (
     <div className="dropdown">
       <button className="dropdown-button" onClick={() => setOpen(!open)}>
-        {multiSelect ? (selectedOptions.length === 0 ? <DropdownSelector/> : selectedOptions.join(', ')) : (selectedOption || <DropdownSelector/>)}
+        {Placeholder()}
       </button>
       {open && (
         <ul className="dropdown-content">
