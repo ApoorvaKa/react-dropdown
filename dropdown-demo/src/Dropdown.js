@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Checkbox } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import './Dropdown.css';
@@ -13,6 +13,7 @@ function Dropdown({ list, multiSelect = true }) {
     if(multiSelect) {
       if (selectedOptions.includes(option)) {
         setSelectedOptions(selectedOptions.filter(o => o !== option));
+        setSelectAll(false);
       } else {
         setSelectedOptions([...selectedOptions, option]);
       }
@@ -29,17 +30,37 @@ function Dropdown({ list, multiSelect = true }) {
     else setSelectedOptions([])
   };
 
-  const DropdownSelector = () =>
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      flexWrap: 'wrap',
-  }}>
-      <label>
-        Select Option 
-      </label>            
-      <ArrowDropDownIcon fontSize ='large'/> 
-    </div>
+  const DropdownSelector = () => {
+    return(
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+      }}>
+        <label>
+          Select Option 
+        </label>            
+        <ArrowDropDownIcon fontSize ='large'/> 
+      </div>
+    )
+  }
+
+  const isSelected = (option) => {
+    let className = '';
+    if (selectAll) {
+      className = 'selected';
+    } else {
+        if (multiSelect) {
+          if (selectedOptions.includes(option)) {
+            className = 'selected';
+          }
+        }else {
+          if (selectedOption === option) {
+            className = 'selected';
+          }
+        }
+    }
+  }
 
   return (
     <div className="dropdown">
@@ -51,12 +72,12 @@ function Dropdown({ list, multiSelect = true }) {
           {multiSelect && (
             <li>
               <Checkbox checked={selectAll} onChange={handleSelectAll}/>
-              Select All/Unselect All
+              {selectAll ? "Unselect All" : "Select All"}
             </li>
           )}
           {list.map((option, index) => (
-            <li key={index} onClick={() => toggleOption(option)} className={(multiSelect ? selectedOptions : [selectedOption]).includes(option) || selectAll ? 'selected' : ''}>
-              {multiSelect && <Checkbox checked={selectAll || selectedOptions.includes(option)} onChange={() => toggleOption(option)} disabled={selectAll}/>}
+            <li key={index} onClick={() => toggleOption(option)} className= {() => isSelected(option)}>
+              {multiSelect && <Checkbox checked={selectedOptions.includes(option)} onChange={() => toggleOption(option)} />}
               {option}
             </li>
           ))}
